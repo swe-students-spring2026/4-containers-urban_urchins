@@ -1,5 +1,7 @@
-from flask import Flask, request, jsonify
+"""flask api for emotion analyze ml client"""
+
 from tempfile import NamedTemporaryFile
+from flask import Flask, request, jsonify
 from deepface import DeepFace
 
 app = Flask(__name__)
@@ -7,11 +9,13 @@ app = Flask(__name__)
 
 @app.route("/health", methods=["GET"])
 def health():
+    """returns a health check response"""
     return jsonify({"message": "ml client is running"}), 200
 
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
+    """takes an imgage and returns emotion analysis"""
     if "image" not in request.files:
         return jsonify({"error": "no image file sent"}), 400
 
@@ -31,7 +35,7 @@ def analyze():
             ),
             200,
         )
-    except Exception:
+    except Exception:  # pylint: disable=broad-exception-caught
         return (
             jsonify(
                 {
@@ -44,6 +48,7 @@ def analyze():
 
 
 def analyze_emotion(uploaded_file):
+    """helper funciton that runs DeepFace"""
     with NamedTemporaryFile(suffix=".jpg") as temp_file:
         uploaded_file.save(temp_file.name)
 
