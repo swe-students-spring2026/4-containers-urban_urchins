@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Result – Emotion Detector{% endblock %}
+{% block content %}
+<!-- harrison replace this w full detail UI -->
+<h1>Analysis Result</h1>
+{% if result.image_b64 %}
+<img src="data:image/jpeg;base64,{{ result.image_b64 }}" alt="Analyzed image" style="max-width:400px;" />
+{% endif %}
+<p><strong>File:</strong> {{ result.filename }}</p>
+<p><strong>Dominant Emotion:</strong> {{ result.dominant_emotion }}</p>
+<p><strong>Analyzed at:</strong> {{ result.uploaded_at }}</p>
+<a href="{{ url_for('index') }}">&larr; Back to Dashboard</a>
+{% endblock %}

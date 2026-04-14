@@ -4,10 +4,18 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+flask = "*"
+pymongo = "*"
+python-dotenv = "*"
+requests = "*"
+Pillow = "*"
 pylint = "*"
 black = "*"
 
 [dev-packages]
+pytest = "*"
+pytest-flask = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.10"

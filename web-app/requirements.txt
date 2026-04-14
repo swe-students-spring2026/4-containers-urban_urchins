@@ -1,0 +1,10 @@
+flask
+pymongo
+python-dotenv
+requests
+Pillow
+pylint
+black
+pytest
+pytest-flask
+pytest-cov
