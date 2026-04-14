@@ -10,7 +10,6 @@ deepface = "*"
 flask = "*"
 pymongo = "*"
 tf-keras = "*"
-pytest = "*"
 
 [dev-packages]
 pytest = "*"
