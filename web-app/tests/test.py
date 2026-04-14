@@ -1,3 +1,5 @@
+"Unit tests for the Flask web application"
+
 import io
 import pytest
 from unittest.mock import patch, MagicMock
