@@ -6,8 +6,14 @@ name = "pypi"
 [packages]
 pylint = "*"
 black = "*"
+deepface = "*"
+flask = "*"
+pymongo = "*"
+tf-keras = "*"
 
 [dev-packages]
+pytest = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.10"
