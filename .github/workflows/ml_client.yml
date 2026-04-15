@@ -1,4 +1,4 @@
-name: run tests
+name: ml client tests
 
 on:
   pull_request:
@@ -24,30 +24,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libgl1 libglib2.0-0
-
-      - name: install pipenv
-        run: pip install pipenv
-
-      - name: install dependencies
-        run: pipenv install --dev
-
-      - name: run pytest
-        run: pipenv run pytest --cov=. tests/*
-
-  test-web-app:
-    name: web app (python 3.10)
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./web-app
-    steps:
-      - name: checkout code
-        uses: actions/checkout@v4
-
-      - name: set up python 3.10
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
 
       - name: install pipenv
         run: pip install pipenv
