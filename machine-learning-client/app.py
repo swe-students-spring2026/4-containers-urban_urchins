@@ -79,7 +79,7 @@ def analyze_emotion(uploaded_file):
         result = result[0]
 
     emotion_scores = {
-        emotion: float(score) for emotion, score in result["emotion"].items() # type: ignore
+        emotion: float(score) for emotion, score in result["emotion"].items()  # type: ignore
     }
 
     return {
