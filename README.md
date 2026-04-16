@@ -4,13 +4,15 @@
 
 # Emotion Detection Dashboard
 
-Emotion Detection Dashboard is a containerized, multi-service application for uploading face images, running emotion inference, and browsing recent results.
-
-The system has three parts:
+This repo is a containerized, multi-service system with three parts:
 
 1. A **machine learning client** that analyzes uploaded face images with DeepFace and predicts the dominant emotion.
-2. A **Flask web app** that provides upload, detail, and dashboard views.
+2. A **Flask web app** where users upload images and browse recent analysis results.
 3. A **MongoDB database** that stores image metadata and emotion predictions.
+
+The web app sends each uploaded image to the ML client, then saves the result in MongoDB so users can review recent history from a dashboard.
+
+## Team
 
 End-to-end flow:
 
@@ -63,7 +65,7 @@ This project is intended to be run with Docker containers.
 
 For local test runs and VS Code test discovery, use the Python and Pipenv setup below.
 
-## VS Code Workspace (Recommended)
+## VS Code Workspace
 
 Open the repository workspace file:
 
@@ -191,19 +193,21 @@ db.images.insertMany([
 
 ## Running Tests
 
-One-time setup per collaborator:
-
-```bash
-cd machine-learning-client && pipenv install --dev
-cd ../web-app && pipenv install --dev
-```
-
-Run tests with coverage from each subsystem directory:
+From each subsystem directory:
 
 ### ML client
 
 ```bash
 cd machine-learning-client
+pipenv install --dev
+pipenv run pytest --cov=. tests/*
+```
+
+### Web app
+
+```bash
+cd web-app
+pipenv install --dev
 pipenv run pytest --cov=. tests/*
 ```
 
