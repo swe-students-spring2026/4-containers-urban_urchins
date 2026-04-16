@@ -1,0 +1,23 @@
+{
+  "folders": [
+    {
+      "name": "machine-learning-client",
+      "path": "machine-learning-client",
+    },
+    {
+      "name": "web-app",
+      "path": "web-app",
+    },
+  ],
+  "settings": {
+    "python-envs.defaultEnvManager": "ms-python.python:pipenv",
+    "python.terminal.activateEnvironment": true,
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.cwd": "${workspaceFolder}",
+    "python.testing.pytestArgs": ["tests"],
+    "chat.tools.terminal.autoApprove": {
+      "docker run": true,
+    },
+  },
+}
