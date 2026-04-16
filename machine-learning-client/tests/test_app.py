@@ -2,7 +2,9 @@
 
 import io
 from unittest.mock import patch
+
 import pytest
+
 from app import app
 
 
@@ -41,7 +43,9 @@ def test_analyze_empty_filename(test_client):
 @patch("app.DeepFace.analyze")
 def test_analyze_success(mock_deepface, test_client):
     """Test successful analysis by mocking the DeepFace model output."""
-    mock_deepface.return_value = [{"dominant_emotion": "happy"}]
+    mock_deepface.return_value = [
+        {"dominant_emotion": "happy", "emotion": {"happy": 99.0, "sad": 1.0}}
+    ]
 
     data = {"image": (io.BytesIO(b"fake-image-bytes"), "face.jpg")}
     response = test_client.post(
@@ -51,12 +55,17 @@ def test_analyze_success(mock_deepface, test_client):
     assert response.status_code == 200
     assert response.json["status"] == "success"
     assert response.json["result"]["dominant_emotion"] == "happy"
+    assert response.json["result"]["emotion_scores"]["happy"] == 99.0
     mock_deepface.assert_called_once()
+    _, kwargs = mock_deepface.call_args
+    assert kwargs["detector_backend"] == "retinaface"
+    assert kwargs["align"] is True
+    assert kwargs["enforce_detection"] is True
 
 
 @patch("app.DeepFace.analyze")
 def test_analyze_exception_handling(mock_deepface, test_client):
-    """Verify 500 error handling if DeepFace fails internally."""
+    """Verify 422 error handling when no face is detected."""
     mock_deepface.side_effect = Exception("Model failure")
 
     data = {"image": (io.BytesIO(b"fake-image-bytes"), "face.jpg")}
@@ -64,6 +73,6 @@ def test_analyze_exception_handling(mock_deepface, test_client):
         "/analyze", data=data, content_type="multipart/form-data"
     )
 
-    assert response.status_code == 500
+    assert response.status_code == 422
     assert response.json["status"] == "error"
-    assert "failed to analyze image" in response.json["error"]
+    assert response.json["error"] == "no face detected in image"

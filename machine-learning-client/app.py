@@ -2,8 +2,9 @@
 
 import os
 from tempfile import NamedTemporaryFile
-from flask import Flask, request, jsonify
+
 from deepface import DeepFace
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
@@ -36,6 +37,16 @@ def analyze():
             ),
             200,
         )
+    except ValueError as exc:
+        return (
+            jsonify(
+                {
+                    "status": "error",
+                    "error": str(exc),
+                }
+            ),
+            422,
+        )
     except Exception:  # pylint: disable=broad-exception-caught
         return (
             jsonify(
@@ -53,20 +64,30 @@ def analyze_emotion(uploaded_file):
     with NamedTemporaryFile(suffix=".jpg") as temp_file:
         uploaded_file.save(temp_file.name)
 
-        result = DeepFace.analyze(
-            img_path=temp_file.name,
-            actions=["emotion"],
-            enforce_detection=False,
-        )
+        try:
+            result = DeepFace.analyze(
+                img_path=temp_file.name,
+                actions=["emotion"],
+                detector_backend="retinaface",
+                align=True,
+                enforce_detection=True,
+            )
+        except Exception as exc:  # pylint: disable=broad-exception-caught
+            raise ValueError("no face detected in image") from exc
 
     if isinstance(result, list):
         result = result[0]
 
+    emotion_scores = {
+        emotion: float(score) for emotion, score in result["emotion"].items()  # type: ignore
+    }
+
     return {
-        "dominant_emotion": result["dominant_emotion"],  # type: ignore
+        "dominant_emotion": str(result["dominant_emotion"]),  # type: ignore
+        "emotion_scores": emotion_scores,
     }
 
 
 if __name__ == "__main__":
     port = int(os.environ.get("FLASK_PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(host="0.0.0.0", port=port, debug=False)
