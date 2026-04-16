@@ -1,5 +1,6 @@
 """flask api for emotion analyze ml client"""
 
+import os
 from tempfile import NamedTemporaryFile
 from flask import Flask, request, jsonify
 from deepface import DeepFace
@@ -67,4 +68,5 @@ def analyze_emotion(uploaded_file):
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    port = int(os.environ.get("FLASK_PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
