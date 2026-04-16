@@ -14,6 +14,15 @@ The web app sends each uploaded image to the ML client, then saves the result in
 
 ## Team
 
+End-to-end flow:
+
+- A user uploads an image in the web app.
+- The web app sends the image to the ML client for emotion analysis.
+- The prediction and metadata are stored in MongoDB.
+- The dashboard and detail pages render recent analysis history.
+
+## Team
+
 - [Sheldon Xie](https://github.com/FilthyS)
 - [Harrison Wong](https://github.com/harrisonmangitwong)
 - [Antonio Jackson](https://github.com/antoniojacksnn)
@@ -24,16 +33,22 @@ The web app sends each uploaded image to the ML client, then saves the result in
 
 ```text
 .
-|-- docker-compose.yml
 |-- .env.example
+|-- docker-compose.yml
 |-- machine-learning-client/
 |   |-- app.py
 |   |-- Dockerfile
+|   |-- Pipfile
+|   |-- pyproject.toml
+|   |-- images/
 |   `-- tests/
 `-- web-app/
     |-- app.py
     |-- db.py
     |-- Dockerfile
+	|-- Pipfile
+	|-- pyproject.toml
+	|-- static/
     |-- templates/
     `-- tests/
 ```
@@ -43,8 +58,29 @@ The web app sends each uploaded image to the ML client, then saves the result in
 Install the following tools:
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Windows/macOS) or Docker Engine + Compose (Linux)
+- [Python 3.10+](https://www.python.org/downloads/)
+- [Pipenv](https://pipenv.pypa.io/en/latest/)
 
 This project is intended to be run with Docker containers.
+
+For local test runs and VS Code test discovery, use the Python and Pipenv setup below.
+
+## VS Code Workspace
+
+Open the repository workspace file:
+
+```text
+4-containers-urban_urchins.code-workspace
+```
+
+This workspace and `.vscode/settings.json` are configured to:
+
+- Use Pipenv as the default Python environment manager
+- Recognize both subprojects (`machine-learning-client` and `web-app`) as separate Python projects
+- Enable pytest discovery with `tests` as the test target
+- Run tests from each folder's workspace context
+
+Note: It is still necessary to run `pipenv install --dev` in each subfolder initially.
 
 ## Environment Variables
 
@@ -159,9 +195,7 @@ docker run --rm --name web-app \
 	web-app
 ```
 
-Notes:
-
-- Open http://localhost:8000 in your browser.
+Open http://localhost:8000 in your browser.
 
 ## Starter Data Import
 
@@ -211,3 +245,14 @@ cd web-app
 pipenv install --dev
 pipenv run pytest --cov=. tests/*
 ```
+
+### Web app
+
+```bash
+cd web-app
+pipenv run pytest --cov=. tests/*
+```
+
+Troubleshooting:
+
+- If `pytest` is not found, ensure you are running through Pipenv (`pipenv run pytest ...`) instead of using a globally installed `pytest`.
