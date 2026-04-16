@@ -64,7 +64,9 @@ def upload():
         "dominant_emotion": dominant_emotion,
     }
     )
-    return redirect(url_for("result_detail", result_id=str(result.inserted_id)))
+    return redirect(
+        url_for("result_detail", result_id=str(result.inserted_id))
+        )
 
 
 @app.route("/results", methods=["GET"])
