@@ -56,7 +56,7 @@ def upload():
     dominant_emotion = _call_ml_client(image_data, file.filename, file.content_type)
 
     database = get_db()
-    database.images.insert_one(
+    result = database.images.insert_one(
         {
             "image_data": Binary(image_data),
             "filename": file.filename,
@@ -64,7 +64,7 @@ def upload():
             "dominant_emotion": dominant_emotion,
         }
     )
-    return redirect(url_for("index"))
+    return redirect(url_for("result_detail", result_id=str(result.inserted_id)))
 
 
 @app.route("/results", methods=["GET"])
