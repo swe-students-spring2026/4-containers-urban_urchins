@@ -57,16 +57,14 @@ def upload():
 
     database = get_db()
     result = database.images.insert_one(
-    {
-        "image_data": Binary(image_data),
-        "filename": file.filename,
-        "uploaded_at": datetime.now(timezone.utc),
-        "dominant_emotion": dominant_emotion,
-    }
+        {
+            "image_data": Binary(image_data),
+            "filename": file.filename,
+            "uploaded_at": datetime.now(timezone.utc),
+            "dominant_emotion": dominant_emotion,
+        }
     )
-    return redirect(
-        url_for("result_detail", result_id=str(result.inserted_id))
-        )
+    return redirect(url_for("result_detail", result_id=str(result.inserted_id)))
 
 
 @app.route("/results", methods=["GET"])
