@@ -6,6 +6,7 @@
     var btnCapture = document.getElementById("btn-capture");
     var btnRetake = document.getElementById("btn-retake");
     var btnAnalyze = document.getElementById("btn-analyze");
+
     var stream = null;
 
     btnStart.addEventListener("click", function () {
@@ -28,9 +29,11 @@
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         canvas.getContext("2d").drawImage(video, 0, 0);
+
         snapshot.src = canvas.toDataURL("image/jpeg");
         snapshot.style.display = "block";
         video.style.display = "none";
+
         btnCapture.style.display = "none";
         btnRetake.style.display = "inline-block";
         btnAnalyze.style.display = "inline-block";
@@ -44,10 +47,11 @@
         btnAnalyze.style.display = "none";
     });
 
-    btnAnalyze.addEventListener("click", function () {
+    btnAnalyze.addEventListener("click", function() {
         canvas.toBlob(function (blob) {
             var formData = new FormData();
             formData.append("image", blob, "webcam-capture.jpg");
+
             fetch("/upload", { method: "POST", body: formData })
                 .then(function (response) {
                     if (response.redirected) {
