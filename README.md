@@ -81,6 +81,41 @@ Optional variables can be set as needed:
 
 ## Setup
 
+### Quick Start With Docker Compose
+
+From the repository root, build and start all services together:
+
+```bash
+docker compose up --build
+```
+
+To run in the background:
+
+```bash
+docker compose up --build -d
+```
+
+This command starts:
+
+- `mongodb` on port `27017`
+- `ml-client` on port `5002`
+- `web-app` on port `5001`
+
+Useful follow-up commands:
+
+```bash
+docker compose ps
+docker compose logs -f
+docker compose down
+```
+
+After startup:
+
+- Open `http://localhost:5001` for the web app
+- Open `http://localhost:5002/health` to verify the ML client is running
+
+### Manual Docker Run
+
 ### 1) Create a shared Docker network
 
 From the repository root:
