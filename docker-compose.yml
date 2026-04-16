@@ -10,6 +10,8 @@ services:
     container_name: ml-client
     ports:
       - "5002:5000"
+    volumes:
+      - deepface-cache:/root/.deepface
     depends_on:
       - mongodb
 
@@ -24,3 +26,6 @@ services:
     depends_on:
       - mongodb
       - ml-client
+
+volumes:
+  deepface-cache:
