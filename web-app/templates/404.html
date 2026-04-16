@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block title %}Not Found – Emotion Detector{% endblock %}
 {% block content %}
-<!-- page for harrison style this page -->
-<h1>404 – Not Found</h1>
-<p>The result you requested does not exist.</p>
-<a href="{{ url_for('index') }}">&larr; Back to Dashboard</a>
+<div class="error-page">
+    <h1>404</h1>
+    <p>The result you requested does not exist.</p>
+    <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Dashboard</a>
+</div>
 {% endblock %}

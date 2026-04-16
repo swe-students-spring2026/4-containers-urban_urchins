@@ -1,18 +1,42 @@
 {% extends "base.html" %}
 {% block title %}Dashboard – Emotion Detector{% endblock %}
 {% block content %}
-<!-- harrison replace this w full dashboard UI -->
 <h1>Emotion Dashboard</h1>
-<a href="{{ url_for('upload_page') }}">Upload Image</a>
-<ul>
-  {% for result in results %}
-  <li>
-    <a href="{{ url_for('result_detail', result_id=result['_id']) }}">
-      {{ result.filename }} — {{ result.dominant_emotion }} ({{ result.uploaded_at }})
-    </a>
-  </li>
-  {% else %}
-  <li>No results yet. <a href="{{ url_for('upload_page') }}">Upload an image.</a></li>
-  {% endfor %}
-</ul>
+
+<div class="card">
+    <h2>Emotion Distribution</h2>
+    <div id="emotion-chart" class="chart-container">
+        {% if not results %}
+        <p class="empty-state">No data yet.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card">
+    <h2>Recent Results</h2>
+    {% if results %}
+    <ul class="results-list" id="results-list">
+        {% for r in results %}
+        <li>
+            <div>
+                <span class="filename">{{ r.filename }}</span>
+                <span class="emotion-tag {{ r.dominant_emotion }}">{{ r.dominant_emotion }}</span>
+            </div>
+            <div>
+                <span>{{ r.uploaded_at }}</span>
+                <a href="{{ url_for('result_detail', result_id=r['_id']) }}">View</a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <div class="empty-state">
+        <p>No results yet.</p>
+        <a href="{{ url_for('upload_page') }}" class="btn btn-primary">Upload an Image</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
 {% endblock %}

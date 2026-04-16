@@ -1,10 +1,31 @@
 {% extends "base.html" %}
 {% block title %}Upload – Emotion Detector{% endblock %}
 {% block content %}
-<!-- harrison replace this w full upload UI including webcam stuff -->
 <h1>Upload an Image</h1>
-<form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
-    <input type="file" name="image" accept="image/*" required />
-    <button type="submit">Analyze</button>
-</form>
+<div class="upload-sections">
+    <div class="card">
+        <h2>From File</h2>
+        <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+            <div class="file-input-wrapper">
+                <input type="file" name="image" accept="image/*" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Analyze</button>
+        </form>
+    </div>
+    <div class="card">
+        <h2>From Webcam</h2>
+        <video id="webcam-video" class="webcam-preview" autoplay playsinline></video>
+        <canvas id="webcam-canvas" style="display:none;"></canvas>
+        <img id="webcam-snapshot" class="captured-preview" style="display:none;" alt="Captured snapshot" />
+        <div class="webcam-controls">
+            <button id="btn-start-camera" class="btn btn-primary">Start Camera</button>
+            <button id="btn-capture" class="btn btn-secondary" disabled>Capture</button>
+            <button id="btn-retake" class="btn btn-secondary" style="display:none;">Retake</button>
+            <button id="btn-analyze" class="btn btn-primary" style="display:none;">Analyze</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/webcam.js') }}"></script>
 {% endblock %}
